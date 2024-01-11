@@ -28,6 +28,9 @@ dependencies {
 }
 
 escrow_ignore{
+  'INSTALLATION/*.*',
+  'INSTALLATION/**/*.*',
+  'INSTALLATION/**/**/*.*',
   'usersettings/config.lua',
   'usersettings/labels.lua',
 }
