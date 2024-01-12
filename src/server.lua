@@ -1,8 +1,11 @@
 local setName = function(id, data, slot)
-  Core.Player.UpdateInfo(id, "firstname", data.firstname)
-  Core.Player.UpdateInfo(id, "lastname", data.lastname)
-  Core.UI.Notify(id, string.format(Labels.NameChanged, data.firstname, data.lastname))
-  Core.Player.RemoveItem(id, Config.item, 1, data, slot)
+  TriggerClientEvent("dirk-namechange:client:sign", id)
+  SetTimeout(Config.signTime * 1000, function()
+    Core.Player.UpdateInfo(id, "firstname", data.firstname)
+    Core.Player.UpdateInfo(id, "lastname", data.lastname)
+    Core.UI.Notify(id, string.format(Labels.NameChanged, data.firstname, data.lastname))
+    Core.Player.RemoveItem(id, Config.item, 1, data, slot)
+  end)
 end
 
 local getMetadata = function(item,extra,mf)
@@ -31,10 +34,9 @@ onReady(function()
   Core.Inventory.UseableItem(Config.item, function(source, item, extra, mf)
     local metadata = getMetadata(item, extra, mf)
     if not next(metadata) and Config.allowedJobs[Core.Player.GetJob(source).name] then
-      print(source)
       local name = getName(source)
       if not name then return end
-      print(source, item.slot, json.encode({firstname = name.firstname, lastname = name.lastname}))
+      Core.UI.Notify(source, Labels.Signed)
       Core.Player.EditItemMetadata(source, item.slot, {firstname = name.firstname, lastname = name.lastname})
       return
     end
@@ -68,6 +70,5 @@ onReady(function()
   if Config.autoAddItems then
     Core.AddAllItems(itemsToAdd)
   end
-
 end)
 

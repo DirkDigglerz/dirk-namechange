@@ -1,6 +1,6 @@
 ['name_change_agreement'] = {
-  ['label'] = 'Name Change Agreement',
   ['stack'] = false,
+  ['label'] = 'Name Change Agreement',
   ['weight'] = 1000,
 
 },
